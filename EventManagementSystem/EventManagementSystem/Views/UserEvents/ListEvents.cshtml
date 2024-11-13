@@ -1,0 +1,57 @@
+﻿@model EventManagementSystem.Models.EventSearchViewModel
+
+@{
+    ViewBag.Title = "Мої Події";
+}
+<main class="container mt-5">
+    <div class="mainContainer">
+
+        <h2>Мої Події</h2>
+        @using (Html.BeginForm("ListEvents", "UserEvents", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateEvent, " дата:")
+                @Html.TextBoxFor(model => model.DateEvent, new { @class = "form-control", @type = "date", required = "required" })
+                @Html.ValidationMessageFor(model => model.DateEvent, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="btn btn-primary">Показати події</button>
+        }
+        @if (ViewBag.UserEvents != null && ((IEnumerable<EventManagementSystem.Models.Event>)ViewBag.UserEvents).Any())
+        {
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Назва</th>
+                        <th>Опис</th>
+                        <th>Дата </th>
+                        <th>Місце</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var eventItem in ViewBag.UserEvents)
+                    {
+                        <tr>
+                            <td>@eventItem.Title</td>
+                            <td>@eventItem.Description</td>
+                            <td>@eventItem.Date.ToString("g")</td>
+                            <td>@eventItem.Location?.Name</td>
+                            <td>
+                                @using (Html.BeginForm("CancelRegistration", "UserEvents", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Скасувати реєстрацію</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (ViewBag.UserEvents != null)
+        {
+            <div class="alert alert-info mt-4">Немає зареєстрованих подій у вибраному діапазоні.</div>
+        }
+    </div>
+</main>
+

@@ -1,0 +1,101 @@
+﻿@model EventManagementSystem.Models.Event
+
+@{
+    ViewData["Title"] = "Створити подію";
+    Layout = "_Layout";
+}
+
+<main class="d-flex justify-content-center">
+    <div class="mainContainer col-md-8 mt-4">
+        @using (Html.BeginForm("Create", "Events", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h2>Створення події</h2>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Title,"Назва", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Description, "Опис", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Date, "Дата", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                    @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.AvailableSeats, "Доступні місця", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AvailableSeats, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AvailableSeats, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.OnlineLink, "Посилання", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.OnlineLink, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.OnlineLink, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.LocationId, "Локація", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.LocationId, (SelectList)ViewData["Locations"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LocationId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Category, "Категорія", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Category,
+                             new SelectList(Enum.GetValues(typeof(Category)).Cast<Category>().Select(c => new { Value = c, Text = c.ToString() }), "Value", "Text"),
+                             "Оберіть категорію", 
+                             new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Format, "Формат", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Format,
+                             new SelectList(Enum.GetValues(typeof(Format)).Cast<Format>().Select(f => new { Value = f, Text = f.ToString() }), "Value", "Text"),
+                             "Оберіть формат", 
+                             new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Format, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Price, "Ціна квитка", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Speakers, "Спікери", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.ListBoxFor(m => m.Speakers, (MultiSelectList)ViewData["Speakers"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Speakers, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Створити" class="btn btn-primary" />
+
+                </div>
+            </div>
+        }
+    </div>
+</main>
